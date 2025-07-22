@@ -1,0 +1,44 @@
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/Login.jsx';
+import RequireAuth from './auth/RequireAuth.jsx';
+import MainLayout from './layout/MainLayout.jsx';
+import Home from "./pages/Home.jsx"
+import NotFound from './pages/NotFound.jsx'
+import Register from './pages/Register.jsx';
+import ProductDetail from './pages/ProductDetail.jsx';
+
+export default function App() {
+  return (
+    <Routes>
+      {/* Trang login riêng, không có layout */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      {/* Các route còn lại nằm trong layout chính */}
+      <Route
+        path="/"
+        element={
+          <RequireAuth>
+            <MainLayout />
+          </RequireAuth>
+        }
+      >
+
+        <Route path="/home" element={
+          <RequireAuth>
+            <Home />
+          </RequireAuth>
+        } />
+
+        <Route path="/product/:id" element={
+          <RequireAuth>
+            <ProductDetail/>
+          </RequireAuth>
+        } />
+
+        <Route path='*' element={<NotFound />} />
+        {/* Thêm các route khác tại đây nếu cần */}
+      </Route>
+    </Routes>
+  );
+}
