@@ -44,7 +44,7 @@ export default function App() {
           </RequireAuth>
         } />
 
-        <Route path="/product/:id" element={
+        <Route path="/product/:productId" element={
           <RequireAuth>
             <ProductDetail/>
           </RequireAuth>
