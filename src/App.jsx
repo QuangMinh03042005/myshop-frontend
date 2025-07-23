@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound.jsx'
 import Register from './pages/Register.jsx';
 import ProductDetail from './pages/ProductDetail.jsx';
 import DailyDiscover from './pages/DailyDiscover.jsx';
+import Seller from './pages/Seller.jsx';
 
 export default function App() {
   return (
@@ -34,6 +35,12 @@ export default function App() {
         <Route path="/daily_discover" element={
           <RequireAuth>
             <DailyDiscover/>
+          </RequireAuth>
+        } />
+
+        <Route path="/seller" element={
+          <RequireAuth>
+            <Seller/>
           </RequireAuth>
         } />
 
