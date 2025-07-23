@@ -1,17 +1,18 @@
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Navbar() {
-  const [user, setUser] = useState(localStorage.getItem("username") || "loz");
+  const [user, setUser] = useState(localStorage.getItem("username") || null);
   const [isHovered, setIsHovered] = useState(false);
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("jwt_token")
+    localStorage.removeItem("jwt_token");
+    localStorage.removeItem("username");
     setUser(null);
     setIsHovered(false);
-    navigate("/login")
+    navigate("/login");
   };
 
   return (
@@ -19,7 +20,12 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="text-xl font-bold text-gray-800">
-          MyShop
+          <Link
+            to="/home"
+            className="text-gray-700 hover:text-blue-500 font-medium"
+          >
+            MyShop
+          </Link>
         </div>
 
         {/* Tìm kiếm */}
@@ -38,6 +44,14 @@ export default function Navbar() {
 
         {/* Phần bên phải */}
         <div className="flex items-center gap-6 text-sm relative">
+          {/* Kênh người bán */}
+          <Link
+            to="/seller"
+            className="text-gray-700 hover:text-blue-500 font-medium"
+          >
+            Kênh Người Bán
+          </Link>
+
           {/* Nếu đã đăng nhập thì hiển thị tên và menu */}
           {user && (
             <div
@@ -52,18 +66,18 @@ export default function Navbar() {
               {/* Dropdown */}
               {isHovered && (
                 <div className="absolute right-0 top-full mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
-                  <a
-                    href="#"
+                  <Link
+                    to="/account"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Tài khoản của tôi
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    to="/orders"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Đơn mua
-                  </a>
+                  </Link>
                   <button
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
@@ -76,9 +90,9 @@ export default function Navbar() {
           )}
 
           {/* Giỏ hàng */}
-          <a href="#" className="text-gray-700 hover:text-blue-500 text-xl">
+          <Link to="/cart" className="text-gray-700 hover:text-blue-500 text-xl">
             <FaShoppingCart />
-          </a>
+          </Link>
         </div>
       </div>
     </header>
