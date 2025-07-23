@@ -2,9 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 const ProductList = ({ products }) => {
     const navigate = useNavigate()
-    const handleLoadMore = () => {
-        navigate("/daily_discover")
-    }
     return (
         <div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
@@ -26,14 +23,6 @@ const ProductList = ({ products }) => {
                 ))}
             </div>
 
-            <div className="flex justify-center mt-6">
-                <button
-                    onClick={handleLoadMore}
-                    className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                >
-                    Xem thêm
-                </button>
-            </div>
         </div>
     );
 };

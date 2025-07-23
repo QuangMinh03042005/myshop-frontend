@@ -1,12 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CategoryList from "../components/CategoryList";
 import ProductList from "../components/ProductList";
 
 export default function Home() {
     const [user, setUser] = useState({})
     const [products, setProducts] = useState([])
+    const navigate = useNavigate()
+
+    const handleLoadMore = () => {
+        navigate("/daily_discover")
+    }
 
 
     useEffect(() => {
@@ -45,7 +50,7 @@ export default function Home() {
             .then((res) => {
                 setProducts(res.data.content)
                 console.log(res.data);
-                
+
             })
             .catch((err) => {
                 console.log("api error ", error.response.message);
@@ -59,13 +64,22 @@ export default function Home() {
                 }
             })
 
-    },[])
+    }, [])
 
 
     return (
         <div>
-            <CategoryList/>
-            <ProductList products={products}/>
+            <CategoryList />
+            <ProductList products={products} />
+
+            <div className="flex justify-center mt-6">
+                <button
+                    onClick={handleLoadMore}
+                    className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                >
+                    Xem thêm
+                </button>
+            </div>
         </div>
     );
 }
