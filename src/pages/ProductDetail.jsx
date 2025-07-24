@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ShopInfo from "../components/ShopInfo";
 
 export default function ProductDetail() {
   const { productId } = useParams();
@@ -26,6 +27,7 @@ export default function ProductDetail() {
   const handleIncrease = () => {
     setQuantity(prev => (prev < product.quantityInStock ? prev + 1 : prev));
   };
+
 
   return (
     <>
@@ -64,11 +66,18 @@ export default function ProductDetail() {
 
       </div>
 
+      <ShopInfo productId={product.productId} />
+
       {/* Mô tả sản phẩm */}
       <div>
         <h2 className="text-xl font-semibold mb-2">Mô tả sản phẩm</h2>
-        <div className="w-full mx-auto mt-8 bg-white p-6 rounded-xl shadow">
-          <p className="text-gray-700">{product.description}</p>
+        <div className="w-full mx-auto mt-1 bg-white p-6 rounded-xl shadow">
+
+          {product.description?.split("\n").map((e, i) => (
+            <p key={i} className="text-gray-700">{e}</p>
+          ))}
+
+
         </div>
       </div>
     </>
