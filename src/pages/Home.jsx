@@ -16,31 +16,6 @@ export default function Home() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/api/cart/252", {
-                headers: {
-                    Authorization: localStorage.getItem("jwt_token")
-
-                }
-            })
-            .then((res) => {
-                setUser(res.data)
-                console.log(res.data)
-            })
-            .catch((err) => {
-                console.log("api error ", error.response.message);
-
-                if (error.response && error.response.status === 401) {
-                    alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
-                    localStorage.removeItem("jwt_token");
-
-                    // hoặc tự động chuyển về trang login
-                    navigate("/login");
-                }
-            })
-    }, [])
-
-    useEffect(() => {
-        axios
             .get("http://localhost:8080/api/product", {
                 headers: {
                     Authorization: localStorage.getItem("jwt_token")

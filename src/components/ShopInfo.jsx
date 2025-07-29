@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ShopInfo({ productId }) {
     const [shop, setShop] = useState(null);
+    const navigae = useNavigate()
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/seller/getShopFromProduct", {
@@ -16,6 +18,10 @@ export default function ShopInfo({ productId }) {
     }, [productId]);
 
     if (!shop) return null;
+
+    const handleShowShop = () => {
+        navigae(`/shop/${shop.shopId}`)
+    }
 
     return (
         <div className="flex items-center gap-6 bg-white rounded-xl shadow p-4 mb-6">
@@ -31,7 +37,7 @@ export default function ShopInfo({ productId }) {
                     <span>Ngày tạo: <span className="font-semibold">{shop.created_at ? new Date(shop.created_at).toLocaleDateString() : "Chưa rõ"}</span></span>
                 </div>
             </div>
-            <button className="ml-auto px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+            <button className="ml-auto px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={handleShowShop}>
                 Xem Shop
             </button>
         </div>

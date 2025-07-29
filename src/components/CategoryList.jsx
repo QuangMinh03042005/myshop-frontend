@@ -21,7 +21,7 @@ export default function CategoryList() {
         });
         setCategories(res.data);
       } catch (err) {
-        console.error("Lỗi khi tải danh mục:", err);
+        console.error("Lỗi khi tải danh mục:", err.message);
       } finally {
         setLoading(false);
       }
