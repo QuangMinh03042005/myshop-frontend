@@ -7,6 +7,8 @@ export default function ProductDetail() {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [message, setMessage] = useState(""); // Thêm state cho thông báo
+  const [messageType, setMessageType] = useState(""); // success hoặc error
 
   useEffect(() => {
     axios.get(`http://localhost:8080/api/product/${productId}`, {
@@ -28,6 +30,35 @@ export default function ProductDetail() {
     setQuantity(prev => (prev < product.quantityInStock ? prev + 1 : prev));
   };
 
+  const handleAdd = async () => {
+    setMessage(""); // Xóa thông báo cũ
+    try {
+      await axios.post(
+        "http://localhost:8080/api/cart/addProductToCart",
+        {
+          cartId: 1, // hoặc lấy cartId động nếu có
+          productId: product.productId,
+          productName: product.productName,
+          quantity,
+          unitPrice: product.price, // nếu price là VND, còn unitPrice là triệu
+          totalPrice: product.price * quantity
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt_token"),
+          },
+        }
+      );
+      setMessageType("success");
+      setMessage("Đã thêm vào giỏ hàng!");
+    } catch (err) {
+      setMessageType("error");
+      setMessage(
+        err.response?.data?.message ||
+        "Có lỗi xảy ra khi thêm vào giỏ hàng!"
+      );
+    }
+  };
 
   return (
     <>
@@ -59,7 +90,14 @@ export default function ProductDetail() {
             >+</button>
           </div>
 
-          <button className="bg-red-500 text-white py-2 rounded-lg hover:bg-red-600">
+          {/* Hiển thị thông báo */}
+          {message && (
+            <div className={`px-4 py-2 rounded ${messageType === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+              {message}
+            </div>
+          )}
+
+          <button className="bg-red-500 text-white py-2 rounded-lg hover:bg-red-600" onClick={handleAdd}>
             Thêm vào giỏ hàng
           </button>
         </div>
