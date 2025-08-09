@@ -9,6 +9,7 @@ import ProductDetail from './pages/ProductDetail.jsx';
 import DailyDiscover from './pages/DailyDiscover.jsx';
 import Seller from './pages/Seller.jsx';
 import ShopDetail from './pages/ShopDetail.jsx';
+import Cart from './pages/Cart.jsx';
 
 export default function App() {
   return (
@@ -42,6 +43,12 @@ export default function App() {
         <Route path="/seller" element={
           <RequireAuth>
             <Seller/>
+          </RequireAuth>
+        } />
+
+        <Route path="/cart/:userId" element={
+          <RequireAuth>
+            <Cart/>
           </RequireAuth>
         } />
 

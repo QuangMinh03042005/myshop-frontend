@@ -10,6 +10,7 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("jwt_token");
     localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     setUser(null);
     setIsHovered(false);
     navigate("/login");
@@ -90,7 +91,7 @@ export default function Navbar() {
           )}
 
           {/* Giỏ hàng */}
-          <Link to="/cart" className="text-gray-700 hover:text-blue-500 text-xl">
+          <Link to={`/cart/${localStorage.getItem("userId")}`} className="text-gray-700 hover:text-blue-500 text-xl">
             <FaShoppingCart />
           </Link>
         </div>
