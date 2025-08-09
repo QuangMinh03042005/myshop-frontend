@@ -21,6 +21,7 @@ function LoginForm() {
       console.log(res)
       localStorage.setItem('jwt_token', token);
       localStorage.setItem("username", res.data.response.username)
+      localStorage.setItem("userId", res.data.response.userId)
       navigate('/home'); // hoặc trang chính của bạn
     } catch (err) {
       setError('Sai tài khoản hoặc mật khẩu');
