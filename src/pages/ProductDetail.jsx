@@ -34,13 +34,13 @@ export default function ProductDetail() {
     setMessage(""); // Xóa thông báo cũ
     try {
       await axios.post(
-        "http://localhost:8080/api/cart/addProductToCart",
+        "http://localhost:8080/api/cart/products",
         {
-          cartId: 1, // hoặc lấy cartId động nếu có
+          cartId: localStorage.getItem("cartId"),
           productId: product.productId,
           productName: product.productName,
           quantity,
-          unitPrice: product.price, // nếu price là VND, còn unitPrice là triệu
+          unitPrice: product.price,
           totalPrice: product.price * quantity
         },
         {
@@ -74,6 +74,7 @@ export default function ProductDetail() {
           <p className="text-gray-600">Cửa hàng: <span className="font-medium">{product.shopName}</span></p>
           <p className="text-red-500 text-2xl font-semibold">{product.price.toLocaleString()} ₫</p>
           <p className="text-gray-700">Kho: <span className="font-medium">{product.quantityInStock}</span></p>
+          <p className="text-gray-700">Vị trí: <span className="font-medium">{product.storageLocation}</span></p>
           <p className="text-sm text-gray-500">Cập nhật: {new Date(product.updatedAt).toLocaleDateString()}</p>
 
           <div className="flex items-center gap-2">
