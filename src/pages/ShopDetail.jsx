@@ -54,6 +54,7 @@ export default function ShopDetail() {
                 <div>
                     <h2 className="m-0 text-2xl font-semibold">{shop.shopName}</h2>
                     <p className="text-gray-500 mt-2">ID: {shop.shopId}</p>
+                    <p className="text-gray-500 mt-2">Vị trí: {shop.address}</p>
                 </div>
             </div>
             <div className="mb-4">
