@@ -24,7 +24,7 @@ export default function Home() {
             })
             .then((res) => {
                 setProducts(res.data.content)
-                console.log(res.data);
+                console.log(res.data.content);
 
             })
             .catch((err) => {
