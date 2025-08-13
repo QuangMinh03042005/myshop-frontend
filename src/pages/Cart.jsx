@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Thêm useNavigate
+import { data } from "autoprefixer";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { userId } = useParams()
+  const { userId } = useParams();
+  const navigate = useNavigate(); // Khởi tạo navigate
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/cart/${userId}`, {
+      .get(`http://localhost:8080/api/cart/products/${userId}`, {
         headers: {
           Authorization: localStorage.getItem("jwt_token"),
         },
@@ -41,34 +43,61 @@ export default function Cart() {
     );
   };
 
-  const handleQuantity = (productId, delta) => {
-    setCart(
+  const handleQuantity = (productId, currQuantity, delta) => {
+    console.log("delta: ", delta);
+
+    const newQuantity = Math.max(1, currQuantity + delta)
+
+    const res = axios.put("http://localhost:8080/api/cart/products", {
+
+      cartId: localStorage.getItem("cartId"),
+      productId: productId,
+      quantity: newQuantity
+
+    }, {
+      headers: {
+        Authorization: localStorage.getItem("jwt_token")
+      }
+    }).then(() => setCart(
       cart.map((item) =>
         item.productId === productId
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          ? { ...item, quantity: newQuantity }
           : item
       )
-    );
+    ))
+      .catch((err) => console.log(err.message)
+      )
+
   };
 
   const handleRemove = (productId) => {
-    setCart(cart.filter((item) => item.productId !== productId));
+    const res = axios.delete("http://localhost:8080/api/cart/products", {
+      data: {
+        cartId: localStorage.getItem("cartId"),
+        productId: productId
+      },
+      headers: {
+        Authorization: localStorage.getItem("jwt_token")
+      }
+    },
+    ).then(() => setCart(cart.filter((item) => item.productId !== productId)))
+      .catch((err) => console.log(err.message))
+
   };
 
   const handleBuy = () => {
-    var items = cart.filter((item) => item.checked === true).map(({ checked, ...item }) => item)
-    if (items.length == 0) {
+    const items = cart
+      .filter((item) => item.checked === true)
+      .map(({ checked, ...item }) => item);
+
+    if (items.length === 0) {
+      alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
       return;
     }
-    console.log(items)
-    axios.post(`http://localhost:8080/api/cart/buyFromCart/${localStorage.getItem("userId")}`, items, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.getItem("jwt_token")
-      }
-    }).then(() => console.log("ok"))
-    .catch(() => console.log(err.message))
-  }
+
+    // Chuyển hướng sang trang Checkout và truyền dữ liệu qua state
+    navigate("/checkout", { state: { items } });
+  };
 
   const total = cart
     .filter((item) => item.checked)
@@ -117,7 +146,7 @@ export default function Cart() {
                 <td>
                   <div className="flex items-center justify-center">
                     <button
-                      onClick={() => handleQuantity(item.productId, -1)}
+                      onClick={() => handleQuantity(item.productId, item.quantity, -1)}
                       disabled={item.quantity === 1}
                       className={`w-8 h-8 border rounded-l text-lg ${item.quantity === 1
                         ? "text-gray-300 border-gray-200"
@@ -133,12 +162,12 @@ export default function Cart() {
                       value={item.quantity}
                       onChange={e => {
                         const val = Math.max(1, Math.min(item.quantityInStock, Number(e.target.value) || 1));
-                        handleQuantity(item.productId, val - item.quantity);
+                        handleQuantity(item.productId, item.quantity, val - item.quantity);
                       }}
                       className="w-14 text-center border rounded h-8 mx-1"
                     />
                     <button
-                      onClick={() => handleQuantity(item.productId, 1)}
+                      onClick={() => handleQuantity(item.productId, item.quantity, 1)}
                       disabled={item.quantity === item.quantityInStock}
                       className={`w-8 h-8 border rounded-r text-lg ${item.quantity === item.quantityInStock
                         ? "text-gray-300 border-gray-200"
