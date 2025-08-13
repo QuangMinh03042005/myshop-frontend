@@ -13,17 +13,27 @@ function LoginForm() {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:8080/api/auth/sign-in', {
+      let res = await axios.post('http://localhost:8080/api/auth/sign-in', {
         username,
         password,
       });
       const token = res.data.response.type + " " + res.data.response.token;
+      const userId = res.data.response.userId;
       console.log(res)
       localStorage.setItem('jwt_token', token);
       localStorage.setItem("username", res.data.response.username)
-      localStorage.setItem("userId", res.data.response.userId)
+      localStorage.setItem("userId", userId)
+      res = await axios.get(`http://localhost:8080/api/cart/${userId}`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt_token")
+        }
+      });
+      console.log(res);
+      localStorage.setItem("cartId", res.data.cartId);
       navigate('/home'); // hoặc trang chính của bạn
     } catch (err) {
+      console.log(err.message);
+      
       setError('Sai tài khoản hoặc mật khẩu');
     }
   };
