@@ -10,6 +10,7 @@ import DailyDiscover from './pages/DailyDiscover.jsx';
 import Seller from './pages/Seller.jsx';
 import ShopDetail from './pages/ShopDetail.jsx';
 import Cart from './pages/Cart.jsx';
+import Checkout from './pages/Checkout.jsx';
 
 export default function App() {
   return (
@@ -61,6 +62,12 @@ export default function App() {
         <Route path="/product/:productId" element={
           <RequireAuth>
             <ProductDetail/>
+          </RequireAuth>
+        } />
+
+        <Route path="/checkout" element={
+          <RequireAuth>
+            <Checkout/>
           </RequireAuth>
         } />
 
