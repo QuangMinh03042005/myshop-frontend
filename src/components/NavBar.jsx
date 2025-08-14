@@ -11,6 +11,7 @@ export default function Navbar() {
     localStorage.removeItem("jwt_token");
     localStorage.removeItem("username");
     localStorage.removeItem("userId");
+    localStorage.removeItem("cartId");
     setUser(null);
     setIsHovered(false);
     navigate("/login");
