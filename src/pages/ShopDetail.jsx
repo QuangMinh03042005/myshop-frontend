@@ -13,7 +13,7 @@ export default function ShopDetail() {
 
         const fetchData = async () => {
             try {
-                const res = await axios.get(`http://localhost:8080/api/seller/${shopId}`, {
+                const res = await axios.get(`http://localhost:8080/api/shops/${shopId}`, {
                     headers: {
                         Authorization: localStorage.getItem("jwt_token")
                     }

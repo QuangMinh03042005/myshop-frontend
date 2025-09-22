@@ -7,10 +7,12 @@ import NotFound from './pages/NotFound.jsx'
 import Register from './pages/Register.jsx';
 import ProductDetail from './pages/ProductDetail.jsx';
 import DailyDiscover from './pages/DailyDiscover.jsx';
-import Seller from './pages/Seller.jsx';
 import ShopDetail from './pages/ShopDetail.jsx';
 import Cart from './pages/Cart.jsx';
 import Checkout from './pages/Checkout.jsx';
+import ProductList from './components/shop/ProductList.jsx';
+import Shop from './pages/Shop.jsx';
+import Dashboard from './components/shop/Dashboard.jsx';
 
 export default function App() {
   return (
@@ -41,19 +43,22 @@ export default function App() {
           </RequireAuth>
         } />
 
-        <Route path="/seller" element={
+        <Route path="/shop" element={
           <RequireAuth>
-            <Seller/>
+            <Shop/>
           </RequireAuth>
-        } />
+        } >
+          <Route path='products' element={<ProductList/>}/>
+          <Route path='dashboard' element={<Dashboard/>}/>
+        </Route>
 
-        <Route path="/cart/:userId" element={
+        <Route path="/cart" element={
           <RequireAuth>
             <Cart/>
           </RequireAuth>
         } />
 
-        <Route path="/shop/:shopId" element={
+        <Route path="/product/shop-detail/:shopId" element={
           <RequireAuth>
             <ShopDetail/>
           </RequireAuth>

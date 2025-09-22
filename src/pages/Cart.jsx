@@ -6,21 +6,24 @@ import { data } from "autoprefixer";
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { userId } = useParams();
+
+  const userId = localStorage.getItem("userId")
   const navigate = useNavigate(); // Khởi tạo navigate
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/cart/products/${userId}`, {
+      .get(`http://localhost:8080/api/users/${userId}/cart/items`, {
         headers: {
           Authorization: localStorage.getItem("jwt_token"),
         },
       })
       .then((res) => {
         const data = res.data;
-        const cartData = data.productList.map((item) => ({
+        console.log(data);
+        
+        const cartData = data.map((item) => ({
           productId: item.productId,
-          cartId: data.cartId,
+          cartId: item.cartId,
           name: item.productName,
           image: item.image,
           quantity: item.quantity,
@@ -35,6 +38,8 @@ export default function Cart() {
       .catch(() => setLoading(false));
   }, []);
 
+  
+
   const handleCheck = (productId) => {
     setCart(
       cart.map((item) =>
@@ -48,7 +53,7 @@ export default function Cart() {
 
     const newQuantity = Math.max(1, currQuantity + delta)
 
-    const res = axios.put("http://localhost:8080/api/cart/products", {
+    const res = axios.put(`http://localhost:8080/api/users/${userId}/cart/items`, {
 
       cartId: localStorage.getItem("cartId"),
       productId: productId,
@@ -71,7 +76,7 @@ export default function Cart() {
   };
 
   const handleRemove = (productId) => {
-    const res = axios.delete("http://localhost:8080/api/cart/products", {
+    const res = axios.delete(`http://localhost:8080/api/users/${userId}/cart/items`, {
       data: {
         cartId: localStorage.getItem("cartId"),
         productId: productId

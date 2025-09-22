@@ -16,7 +16,7 @@ export default function Home() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/api/product", {
+            .get("http://localhost:8080/api/products", {
                 headers: {
                     Authorization: localStorage.getItem("jwt_token")
 

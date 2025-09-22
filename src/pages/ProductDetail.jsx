@@ -10,8 +10,10 @@ export default function ProductDetail() {
   const [message, setMessage] = useState(""); // Thêm state cho thông báo
   const [messageType, setMessageType] = useState(""); // success hoặc error
 
+  const userId = localStorage.getItem("userId")
+
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/product/${productId}`, {
+    axios.get(`http://localhost:8080/api/users/${userId}/shop/products/${productId}`, {
       headers: {
         Authorization: localStorage.getItem("jwt_token")
       }
@@ -34,7 +36,7 @@ export default function ProductDetail() {
     setMessage(""); // Xóa thông báo cũ
     try {
       await axios.post(
-        "http://localhost:8080/api/cart/products",
+        `http://localhost:8080/api/users/${userId}/cart/items`,
         {
           cartId: localStorage.getItem("cartId"),
           productId: product.productId,

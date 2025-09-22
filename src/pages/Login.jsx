@@ -23,7 +23,7 @@ function LoginForm() {
       localStorage.setItem('jwt_token', token);
       localStorage.setItem("username", res.data.response.username)
       localStorage.setItem("userId", userId)
-      res = await axios.get(`http://localhost:8080/api/cart/${userId}`, {
+      res = await axios.get(`http://localhost:8080/api/users/${userId}/cart`, {
         headers: {
           Authorization: localStorage.getItem("jwt_token")
         }

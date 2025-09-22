@@ -15,7 +15,7 @@ export default function DailyDiscover() {
             setLoading(true);
             setError(null);
             try {
-                const res = await axios.get(`http://localhost:8080/api/product?pageNumber=${pageNumber}&pageSize=48`, {
+                const res = await axios.get(`http://localhost:8080/api/products?pageNumber=${pageNumber}&pageSize=48`, {
                     headers: {
                         Authorization: localStorage.getItem("jwt_token")
                     }

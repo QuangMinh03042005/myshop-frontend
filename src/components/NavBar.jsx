@@ -48,10 +48,10 @@ export default function Navbar() {
         <div className="flex items-center gap-6 text-sm relative">
           {/* Kênh người bán */}
           <Link
-            to="/seller"
+            to="/shop"
             className="text-gray-700 hover:text-blue-500 font-medium"
           >
-            Kênh Người Bán
+            Shop của bạn
           </Link>
 
           {/* Nếu đã đăng nhập thì hiển thị tên và menu */}
@@ -92,7 +92,7 @@ export default function Navbar() {
           )}
 
           {/* Giỏ hàng */}
-          <Link to={`/cart/${localStorage.getItem("userId")}`} className="text-gray-700 hover:text-blue-500 text-xl">
+          <Link to="/cart" className="text-gray-700 hover:text-blue-500 text-xl">
             <FaShoppingCart />
           </Link>
         </div>

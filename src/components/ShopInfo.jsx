@@ -6,9 +6,10 @@ export default function ShopInfo({ productId }) {
     const [shop, setShop] = useState(null);
     const navigae = useNavigate()
 
+    const userId = localStorage.getItem("userId");
+
     useEffect(() => {
-        axios.get("http://localhost:8080/api/seller/getShopFromProduct", {
-            params: { productId },
+        axios.get(`http://localhost:8080/api/users/${userId}/shop/products/${productId}/shop`, {
             headers: {
                 Authorization: localStorage.getItem("jwt_token")
             }
@@ -20,8 +21,9 @@ export default function ShopInfo({ productId }) {
     if (!shop) return null;
 
     const handleShowShop = () => {
-        navigae(`/shop/${shop.shopId}`)
+        navigae(`/product/shop-detail/${shop.shopId}`)
     }
+    
 
     return (
         <div className="flex items-center gap-6 bg-white rounded-xl shadow p-4 mb-6">
